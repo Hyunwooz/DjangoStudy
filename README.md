@@ -166,3 +166,42 @@ from .models import Cafe
 
 admin.site.register(Cafe)
 ```
+13. superuser를 만듭니다. 터미널에 `python manage.py createsuperuser`라고 입력해주세요. 비밀번호가 너무 짧으면 재 설정을 하라 하니 주의해주세요.
+
+14. `python manage.py runserver 0:80`을 입력하신 후 `기본url/admin`으로 이동합니다. 로그인 후 cafes에 add를 클릭해 게시물 3개를 만듭니다.
+
+15. views.py파일을 열어 index 함수를 수정합니다.
+
+```
+from django.shortcuts import render, redirect
+from .models import Cafe
+
+def index(request):
+    cafes = Cafe.objects.all()
+    context = {
+        'cafes': cafes
+    }
+    return render(request, 'main/cafelist.html', context)
+```
+
+16. index.html을 아래와 같이 수정하시면 웹 페이지에서 게시물을 볼 수 있습니다.
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <title>cafelist</title>
+</head>
+<body>
+  <h1>cafelist</h1>
+  <table>
+    {% for cafe in cafes %}
+    <tr>
+      <td>{{ cafe.name }}</td>
+      <td>{{ cafe.content }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
+```
